@@ -23,9 +23,7 @@ def _cache_path(key: str) -> str:
     Se a chave sanitizada exceder 200 caracteres (limite de filename
     é ~255 na maioria dos filesystems), usa hash SHA-256 como nome.
     """
-    safe_key = "".join(
-        c if c.isalnum() or c in "-_." else "_" for c in key
-    )
+    safe_key = "".join(c if c.isalnum() or c in "-_." else "_" for c in key)
     # Limita o nome do arquivo para não exceder o limite do filesystem
     if len(safe_key) > 200:
         hash_key = hashlib.sha256(key.encode()).hexdigest()[:40]
@@ -115,5 +113,6 @@ def cache_key_game(url: str) -> str:
     """Gera chave de cache para página de jogo."""
     # Usa o path da URL como parte da chave
     from urllib.parse import urlparse
+
     parsed = urlparse(url)
     return f"game:{parsed.path.strip('/')}"

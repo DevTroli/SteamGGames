@@ -59,6 +59,7 @@ logger = logging.getLogger(APP_NAME)
 
 # ── Sessão HTTP ─────────────────────────────────────────────────────────────
 
+
 def _make_ssl_context() -> ssl_module.SSLContext:
     """Cria SSL context com certifi CA bundle."""
     ctx = ssl_module.create_default_context(cafile=certifi.where())
@@ -131,7 +132,7 @@ class SteamGGScraper:
                 async with session.get(url, headers=headers) as resp:
                     if resp.status in BACKOFF_STATUS_CODES:
                         # Backoff exponencial
-                        wait = BACKOFF_BASE_DELAY * (2 ** attempt) + random.uniform(0, 2)
+                        wait = BACKOFF_BASE_DELAY * (2**attempt) + random.uniform(0, 2)
                         logger.warning(
                             f"Status {resp.status} em {url} — "
                             f"backoff {wait:.1f}s (tentativa {attempt + 1}/{retries + 1})"
@@ -148,7 +149,7 @@ class SteamGGScraper:
             except (aiohttp.ClientError, asyncio.TimeoutError) as e:
                 logger.warning(f"Erro de rede em {url}: {e}")
                 if attempt < retries:
-                    wait = BACKOFF_BASE_DELAY * (2 ** attempt)
+                    wait = BACKOFF_BASE_DELAY * (2**attempt)
                     await asyncio.sleep(wait)
                     continue
                 return None
@@ -270,9 +271,14 @@ class SteamGGScraper:
                     continue
                 # Ignora links de paginação e navegação
                 skip_patterns = [
-                    "/page/", "/?s=", "/category/",
-                    "/tag/", "/author/", "/feed/",
-                    "#", "javascript:",
+                    "/page/",
+                    "/?s=",
+                    "/category/",
+                    "/tag/",
+                    "/author/",
+                    "/feed/",
+                    "#",
+                    "javascript:",
                 ]
                 if any(pat in href.lower() for pat in skip_patterns):
                     continue
@@ -431,9 +437,13 @@ class SteamGGScraper:
                 title = title_tag.get_text(strip=True)
                 # Remove sufixos comuns do site (várias variações)
                 for suffix in [
-                    " – SteamGG.NET", " - SteamGG.NET",
-                    " | SteamGG.NET", " – SteamGG", " - SteamGG",
-                    " | SteamGG", " - steamgg.net",
+                    " – SteamGG.NET",
+                    " - SteamGG.NET",
+                    " | SteamGG.NET",
+                    " – SteamGG",
+                    " - SteamGG",
+                    " | SteamGG",
+                    " - steamgg.net",
                 ]:
                     if suffix in title:
                         title = title.replace(suffix, "")
@@ -462,9 +472,7 @@ class SteamGGScraper:
                 seen_urls.add(href)
                 label = btn.get_text(strip=True) or "Download"
                 host = extract_host(href)
-                download_links.append(
-                    DownloadLink(label=label, url=href, host=host)
-                )
+                download_links.append(DownloadLink(label=label, url=href, host=host))
 
         # Seletor 2: qualquer <a> com classe parcial "vc_btn"
         # Alguns temas usam variações como "vc_btn3-size-md"
@@ -482,9 +490,7 @@ class SteamGGScraper:
                     seen_urls.add(href)
                     label = a_tag.get_text(strip=True) or "Download"
                     host = extract_host(href)
-                    download_links.append(
-                        DownloadLink(label=label, url=href, host=host)
-                    )
+                    download_links.append(DownloadLink(label=label, url=href, host=host))
 
         # Seletor 3 (fallback): qualquer link <a> apontando para hosts de download
         if not download_links:
@@ -496,16 +502,16 @@ class SteamGGScraper:
                     seen_urls.add(href)
                     label = a_tag.get_text(strip=True) or "Download"
                     host = extract_host(href)
-                    download_links.append(
-                        DownloadLink(label=label, url=href, host=host)
-                    )
+                    download_links.append(DownloadLink(label=label, url=href, host=host))
 
         # Seletor 4 (fallback extremo): qualquer URL http/https no
         # conteúdo que aponte para hosts de download
         if not download_links:
-            content_area = soup.find("article") or soup.find(
-                class_="entry-content"
-            ) or soup.find(class_="post-content")
+            content_area = (
+                soup.find("article")
+                or soup.find(class_="entry-content")
+                or soup.find(class_="post-content")
+            )
             if content_area and isinstance(content_area, Tag):
                 for a_tag in content_area.find_all("a", href=True):
                     href = a_tag["href"].strip()
@@ -515,9 +521,7 @@ class SteamGGScraper:
                         seen_urls.add(href)
                         label = a_tag.get_text(strip=True) or "Download"
                         host = extract_host(href)
-                        download_links.append(
-                            DownloadLink(label=label, url=href, host=host)
-                        )
+                        download_links.append(DownloadLink(label=label, url=href, host=host))
 
         return GamePage(
             title=title,
@@ -543,6 +547,7 @@ class SteamGGScraper:
             return ""
 
         import re
+
         # Regex unificado: remove "Free Download" com qualquer prefixo
         # (espaço, em-dash, hífen) e qualquer sufixo (espaço antes de versão)
         # Captura: " Free Download", "– Free Download", "- Free Download",
@@ -578,6 +583,7 @@ class SteamGGScraper:
         Ex: /elden-ring-free-download → "Elden Ring"
         """
         from urllib.parse import urlparse
+
         path = urlparse(url).path.strip("/")
         # Remove "-free-download" do final
         if path.endswith("-free-download"):

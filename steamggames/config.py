@@ -37,26 +37,21 @@ USER_AGENTS = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_5) AppleWebKit/605.1.15 "
     "(KHTML, like Gecko) Version/17.4 Safari/605.1.15",
     "Mozilla/5.0 (X11; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) "
-    "Gecko/20100101 Firefox/126.0",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0",
     "Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 "
     "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
 ]
 
 # ── Cache ───────────────────────────────────────────────────────────────────
 # TTL do cache em segundos: 4h para busca, 12h para página de jogo
-CACHE_TTL_SEARCH = 4 * 3600    # 4 horas
-CACHE_TTL_GAME = 12 * 3600     # 12 horas
+CACHE_TTL_SEARCH = 4 * 3600  # 4 horas
+CACHE_TTL_GAME = 12 * 3600  # 12 horas
 
 # Diretório de cache (XDG)
 if sys.platform == "win32":
-    XDG_CACHE_HOME = os.path.join(
-        os.environ.get("LOCALAPPDATA", "."), "steamggames"
-    )
+    XDG_CACHE_HOME = os.path.join(os.environ.get("LOCALAPPDATA", "."), "steamggames")
 else:
-    XDG_CACHE_HOME = os.environ.get(
-        "XDG_CACHE_HOME", os.path.expanduser("~/.cache")
-    )
+    XDG_CACHE_HOME = os.environ.get("XDG_CACHE_HOME", os.path.expanduser("~/.cache"))
 CACHE_DIR = os.path.join(XDG_CACHE_HOME, "steamggames")
 
 # ── Paginação ───────────────────────────────────────────────────────────────

@@ -69,8 +69,7 @@ def _show_results(
     """Exibe resultados de busca em tabela Rich."""
     if not results:
         console.print(
-            f"[yellow]Nenhum resultado para '[bold]{query}[/bold]' "
-            f"(página {page}).[/yellow]"
+            f"[yellow]Nenhum resultado para '[bold]{query}[/bold]' (página {page}).[/yellow]"
         )
         return
 
@@ -103,11 +102,13 @@ def _show_game_info(game: GamePage) -> None:
         f"[bold]URL:[/bold] [link={game.url}]{game.url}[/link]",
     ]
 
-    console.print(Panel(
-        "\n".join(info_lines),
-        title="🎮 Detalhes do Jogo",
-        border_style="cyan",
-    ))
+    console.print(
+        Panel(
+            "\n".join(info_lines),
+            title="🎮 Detalhes do Jogo",
+            border_style="cyan",
+        )
+    )
 
     if game.download_links:
         dl_table = Table(
@@ -243,9 +244,7 @@ async def run_tui(refresh: bool = False) -> None:
                     if 0 <= idx < len(current_results):
                         url = current_results[idx].url
                     else:
-                        console.print(
-                            f"[red]Número inválido. Use 1-{len(current_results)}.[/red]"
-                        )
+                        console.print(f"[red]Número inválido. Use 1-{len(current_results)}.[/red]")
                         continue
                 else:
                     url = arg
@@ -270,9 +269,7 @@ async def run_tui(refresh: bool = False) -> None:
                     if 0 <= idx < len(current_results):
                         url = current_results[idx].url
                     else:
-                        console.print(
-                            f"[red]Número inválido. Use 1-{len(current_results)}.[/red]"
-                        )
+                        console.print(f"[red]Número inválido. Use 1-{len(current_results)}.[/red]")
                         continue
                 else:
                     url = arg

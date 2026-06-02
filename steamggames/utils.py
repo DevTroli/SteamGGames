@@ -17,6 +17,7 @@ def random_ua() -> str:
 def random_delay() -> float:
     """Retorna um delay aleatório entre DELAY_MIN e DELAY_MAX segundos."""
     from steamggames.config import DELAY_MAX, DELAY_MIN
+
     return random.uniform(DELAY_MIN, DELAY_MAX)
 
 
@@ -70,9 +71,7 @@ def is_steamgg_game_url(url: str) -> bool:
             return False
         parsed = urlparse(url)
         return bool(
-            parsed.hostname
-            and "steamgg.net" in parsed.hostname
-            and "-free-download" in parsed.path
+            parsed.hostname and "steamgg.net" in parsed.hostname and "-free-download" in parsed.path
         )
     except Exception:
         return False
@@ -81,6 +80,7 @@ def is_steamgg_game_url(url: str) -> bool:
 def is_download_link(url: str) -> bool:
     """Verifica se uma URL aponta para um host de download conhecido."""
     from steamggames.config import DOWNLOAD_HOSTS
+
     host = extract_host(url)
     return host in DOWNLOAD_HOSTS
 

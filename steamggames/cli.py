@@ -39,7 +39,8 @@ Exemplos:
     )
 
     parser.add_argument(
-        "--refresh", "-r",
+        "--refresh",
+        "-r",
         action="store_true",
         help="Força refresh — ignora cache",
     )
@@ -58,7 +59,8 @@ Exemplos:
         help="Termo de busca (ex: 'Elden Ring')",
     )
     sp_search.add_argument(
-        "--page", "-p",
+        "--page",
+        "-p",
         type=int,
         default=1,
         help="Número da página (default: 1)",
@@ -102,8 +104,7 @@ async def _cmd_search(query: str, page: int, refresh: bool) -> None:
 
     if not results:
         console.print(
-            f"[yellow]Nenhum resultado para '[bold]{query}[/bold]' "
-            f"(página {page}).[/yellow]"
+            f"[yellow]Nenhum resultado para '[bold]{query}[/bold]' (página {page}).[/yellow]"
         )
         return
 
@@ -156,11 +157,13 @@ async def _cmd_info(url: str, refresh: bool) -> None:
         f"[bold]URL:[/bold] [link={game.url}]{game.url}[/link]",
     ]
 
-    console.print(Panel(
-        "\n".join(info_lines),
-        title="🎮 Detalhes do Jogo",
-        border_style="cyan",
-    ))
+    console.print(
+        Panel(
+            "\n".join(info_lines),
+            title="🎮 Detalhes do Jogo",
+            border_style="cyan",
+        )
+    )
 
     # Tabela de links de download
     if game.download_links:

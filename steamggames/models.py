@@ -58,10 +58,7 @@ class GamePage:
             title=data.get("title", ""),
             url=data.get("url", ""),
             version=data.get("version", "-"),
-            download_links=[
-                DownloadLink.from_dict(dl)
-                for dl in data.get("download_links", [])
-            ],
+            download_links=[DownloadLink.from_dict(dl) for dl in data.get("download_links", [])],
         )
 
 
@@ -69,9 +66,9 @@ class GamePage:
 class DownloadLink:
     """Link de download extraído de um botão vc_btn3."""
 
-    label: str   # texto do botão (ex: "Download", "Part 1")
-    url: str     # URL do link
-    host: str    # host/domain (ex: "datanodes.to")
+    label: str  # texto do botão (ex: "Download", "Part 1")
+    url: str  # URL do link
+    host: str  # host/domain (ex: "datanodes.to")
 
     def to_dict(self) -> dict:
         return {
